@@ -7,11 +7,21 @@ from mangum import Mangum
 
 from server.api import auth, stocks
 from server.utils.database import init_database, close_db_connection, SessionLocal
-from server.models.users import User  
+from server.models.users import User
 
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
+ALLOWED_HOSTS = [
+    "localhost",
+    "0.0.0.0",
+    "127.0.0.1",
+    "https://zoku-backend.vercel.app/",
+]
 
-CORS_ORIGINS = ["http://localhost:3000", "http://localhost:3001"]
+CORS_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "https://zokuxai.vercel.app/",
+]
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -21,9 +31,9 @@ async def lifespan(app: FastAPI):
         print("WARNING: Database initialization failed, but continuing startup...")
     else:
         print("Application startup complete!")
-    
+
     yield
-    
+
     print("\033[93mINFO:     Shutting down: Closing database connections")
     try:
         close_db_connection()
@@ -45,7 +55,12 @@ app.add_middleware(
     allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-    allow_headers=["Authorization", "Content-Type", "X-Requested-With", "x-vercel-set-bypass-cookie"],
+    allow_headers=[
+        "Authorization",
+        "Content-Type",
+        "X-Requested-With",
+        "x-vercel-set-bypass-cookie",
+    ],
 )
 
 app.include_router(auth.router)
@@ -67,5 +82,6 @@ def health_check():
         return {"status": "unhealthy", "database": str(e)}
     finally:
         db.close()
+
 
 handler = Mangum(app)
