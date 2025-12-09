@@ -30,6 +30,17 @@ if DB_URL.startswith("sqlite"):
     )
 else:
     # For serverless environments (Vercel), use smaller pool sizes
+    # Neon pooler doesn't support statement_timeout in options
+    connect_args = {
+        "connect_timeout": 10,
+        "sslmode": "require"  # Required for Neon
+    }
+    
+    # Only add statement_timeout for non-pooled connections
+    # Neon pooled connections (ending in -pooler) don't support this
+    if "-pooler" not in DB_URL:
+        connect_args["options"] = "-c statement_timeout=10000"
+    
     engine = create_engine(
         DB_URL,
         echo=False,
@@ -38,10 +49,7 @@ else:
         max_overflow=0,  # No overflow for serverless
         pool_pre_ping=True,
         pool_recycle=300,
-        connect_args={
-            "connect_timeout": 10,
-            "options": "-c statement_timeout=10000"  # 10 second timeout
-        }
+        connect_args=connect_args
     )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
