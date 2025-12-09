@@ -3,7 +3,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from sqlalchemy import text
-from mangum import Mangum
 
 from server.api import auth, stocks
 from server.utils.database import init_database, close_db_connection, SessionLocal
@@ -97,4 +96,3 @@ def health_check():
         db.close()
 
 
-handler = Mangum(app)
