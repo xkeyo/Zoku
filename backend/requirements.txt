@@ -36,7 +36,7 @@ pandas==2.3.2
 httpx
 alpha-vantage==2.3.1
 yfinance==0.2.48
-pandas-ta==0.4.71b0
+pandas-ta
 numpy==1.26.4
 scipy==1.11.4
 websockets==12.0
