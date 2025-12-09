@@ -40,3 +40,4 @@ ta-lib==0.4.32
 numpy==1.26.4
 scipy==1.11.4
 websockets==12.0
+mangum

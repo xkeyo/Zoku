@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 import httpx
@@ -102,7 +103,7 @@ async def google_login():
         f"scope=openid%20email%20profile&"
         f"access_type=offline"
     )
-    return {"url": google_auth_url}
+    return RedirectResponse(url=google_auth_url)
 
 
 @router.get("/google/callback")
@@ -150,12 +151,9 @@ async def google_callback(code: str, db: Session = Depends(get_db)):
         access_token = create_access_token({"uid": user.user_id, "email": user.email})
         refresh_token = create_refresh_token({"uid": user.user_id})
         
-        return {
-            "access_token": access_token,
-            "refresh_token": refresh_token,
-            "token_type": "bearer",
-            "user": UserResponse.model_validate(user),
-        }
+        # Redirect to frontend with tokens
+        redirect_url = f"{settings.FRONTEND_URL}/auth/callback?access_token={access_token}&refresh_token={refresh_token}"
+        return RedirectResponse(url=redirect_url)
     
     except HTTPException:
         raise
