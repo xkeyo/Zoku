@@ -13,13 +13,13 @@ ALLOWED_HOSTS = [
     "localhost",
     "0.0.0.0",
     "127.0.0.1",
-    "https://zoku-backend.vercel.app/",
+    "zoku-backend.vercel.app",
 ]
 
 CORS_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:3001",
-    "https://zokuxai.vercel.app/",
+    "https://zokuxai.vercel.app",
 ]
 
 
