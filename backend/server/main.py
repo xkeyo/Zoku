@@ -26,11 +26,14 @@ CORS_ORIGINS = [
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("Starting FastAPI application...")
-    success = init_database()
-    if not success:
-        print("WARNING: Database initialization failed, but continuing startup...")
-    else:
-        print("Application startup complete!")
+    try:
+        success = init_database()
+        if not success:
+            print("WARNING: Database initialization failed, but continuing startup...")
+        else:
+            print("Application startup complete!")
+    except Exception as e:
+        print(f"WARNING: Database initialization error: {e}. Continuing startup...")
 
     yield
 
@@ -69,7 +72,17 @@ app.include_router(stocks.router)
 
 @app.get("/")
 def home():
-    return {"message": "Zoku server is running", "docs": "/docs", "version": "1.0"}
+    return {
+        "message": "Zoku server is running",
+        "docs": "/docs",
+        "version": "1.0",
+        "status": "healthy",
+        "endpoints": {
+            "auth": "/auth/login, /auth/register, /auth/google/login",
+            "stocks": "/stocks/quote/{symbol}, /stocks/search, /stocks/profile/{symbol}",
+            "health": "/health"
+        }
+    }
 
 
 @app.get("/health")

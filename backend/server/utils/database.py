@@ -14,6 +14,10 @@ logger = logging.getLogger(__name__)
 
 DB_URL = os.getenv("DB_URL")
 
+if not DB_URL:
+    logger.warning("DB_URL not found in environment, using SQLite fallback")
+    DB_URL = "sqlite:///./app.db"
+
 if DB_URL.startswith("sqlite"):
     engine = create_engine(
         DB_URL,
@@ -25,16 +29,18 @@ if DB_URL.startswith("sqlite"):
         }
     )
 else:
+    # For serverless environments (Vercel), use smaller pool sizes
     engine = create_engine(
         DB_URL,
         echo=False,
         poolclass=QueuePool,
-        pool_size=5,
-        max_overflow=10,
+        pool_size=1,  # Smaller pool for serverless
+        max_overflow=0,  # No overflow for serverless
         pool_pre_ping=True,
         pool_recycle=300,
         connect_args={
-            "connect_timeout": 10
+            "connect_timeout": 10,
+            "options": "-c statement_timeout=10000"  # 10 second timeout
         }
     )
 
@@ -126,6 +132,6 @@ def init_database():
         print("\033[92mINFO:     Database tables created successfully!")
         return True
     except Exception as e:
-        print("\033[91mERROR:    Error creating database tables: {e}")
+        print(f"\033[91mERROR:    Error creating database tables: {e}")
         return False
             
