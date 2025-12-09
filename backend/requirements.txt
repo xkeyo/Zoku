@@ -32,12 +32,12 @@ uvicorn==0.34.0
 PyPDFForm==1.4.30
 PyPDF2==3.0.1
 openpyxl==3.1.5
-pandas==2.3.2
+pandas>=2.0.0
 httpx
 alpha-vantage==2.3.1
 yfinance==0.2.48
 pandas-ta
-numpy==1.26.4
-scipy==1.11.4
+numpy>=1.26.0
+scipy>=1.11.0
 websockets==12.0
 mangum
