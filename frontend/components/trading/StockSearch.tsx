@@ -41,7 +41,7 @@ export function StockSearch({
   const [results, setResults] = useState<StockResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedStock, setSelectedStock] = useState("");
-  const debounceTimer = useRef<NodeJS.Timeout>();
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (query.length < 1) {
