@@ -1,19 +1,16 @@
+"""
+Stock market API endpoints with real data from Finnhub.
+Provides search for ALL stocks, real-time quotes, and company profiles.
+"""
 from fastapi import APIRouter, HTTPException, Query
 from typing import List
-from datetime import datetime
 
 from server.schemas.stocks import (
     StockQuote,
     StockSymbol,
     CompanyProfile,
-    PatternAnalysisRequest,
-    PatternAnalysisResponse,
-    PatternDetection,
-    StockDataResponse,
-    CandleData
 )
-from server.utils.stock_service_simple import get_stock_service
-# from server.utils.pattern_recognition import PatternRecognizer  # Disabled for Vercel deployment size
+from server.utils.stock_service_real import get_stock_service
 
 router = APIRouter(prefix="/stocks", tags=["Stocks"])
 
@@ -48,64 +45,85 @@ async def get_company_profile(symbol: str):
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@router.get("/candles/{symbol}", response_model=StockDataResponse)
-async def get_stock_candles(
-    symbol: str,
-    resolution: str = Query(default="D"),
-    days_back: int = Query(default=180, ge=30, le=365)
-):
-    raise HTTPException(
-        status_code=503,
-        detail="Candles endpoint temporarily disabled due to Vercel deployment size constraints"
-    )
+@router.post("/quotes/batch", response_model=List[StockQuote])
+async def get_batch_quotes(symbols: List[str]):
+    """
+    Get quotes for multiple symbols in a single request.
+    Limit to 50 symbols per request to avoid rate limiting.
+    """
+    if len(symbols) > 50:
+        raise HTTPException(status_code=400, detail="Maximum 50 symbols per request")
+    
+    try:
+        stock_service = get_stock_service()
+        quotes = []
+        for symbol in symbols:
+            try:
+                quote = stock_service.get_quote(symbol.upper())
+                quotes.append(StockQuote(**quote))
+            except Exception as e:
+                print(f"Failed to fetch {symbol}: {e}")
+                continue
+        return quotes
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
-@router.post("/patterns/analyze", response_model=PatternAnalysisResponse)
-async def analyze_patterns(request: PatternAnalysisRequest):
-    raise HTTPException(
-        status_code=503,
-        detail="Pattern analysis temporarily disabled due to Vercel deployment size constraints"
-    )
-
-
-@router.get("/patterns/{symbol}", response_model=PatternAnalysisResponse)
-async def quick_pattern_analysis(
-    symbol: str,
-    resolution: str = Query(default="D"),
-    days_back: int = Query(default=180, ge=30, le=365)
-):
-    raise HTTPException(
-        status_code=503,
-        detail="Pattern analysis temporarily disabled due to Vercel deployment size constraints"
-    )
+@router.get("/market-movers")
+async def get_market_movers():
+    """
+    Get top gainers and losers from a curated list of stocks.
+    Returns pre-calculated market movers to reduce frontend API calls.
+    """
+    try:
+        stock_service = get_stock_service()
+        
+        # Curated list of diverse stocks
+        symbols = [
+            "AAPL", "MSFT", "GOOGL", "AMZN", "META", "NVDA", "TSLA",
+            "AMD", "INTC", "NFLX", "PYPL", "CRWD", "SNOW",
+            "JPM", "BAC", "V", "MA", "GS",
+            "JNJ", "UNH", "PFE", "LLY",
+            "WMT", "HD", "MCD", "NKE", "COST",
+            "XOM", "CVX", "BA", "CAT",
+            "TSM", "AVGO", "COIN", "UBER", "ABNB"
+        ]
+        
+        quotes = []
+        for symbol in symbols:
+            try:
+                quote = stock_service.get_quote(symbol)
+                quotes.append(quote)
+            except Exception as e:
+                print(f"Failed to fetch {symbol}: {e}")
+                continue
+        
+        # Sort by percent change
+        sorted_by_gain = sorted(quotes, key=lambda x: x.get('percent_change', 0), reverse=True)
+        sorted_by_loss = sorted(quotes, key=lambda x: x.get('percent_change', 0))
+        
+        return {
+            "gainers": sorted_by_gain[:5],
+            "losers": sorted_by_loss[:5],
+            "total_analyzed": len(quotes)
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @router.get("/")
 async def stocks_info():
     return {
-        "message": "Stock Market Pattern Recognition API",
-        "version": "1.0.0",
+        "message": "Stock Market Data API - Hybrid Approach",
+        "version": "3.0.0",
         "features": [
-            "Real-time stock quotes",
-            "Historical candlestick data",
-            "Advanced pattern recognition",
-            "Support/Resistance detection",
+            "Real-time stock quotes from Finnhub (FREE)",
+            "Search ALL US stocks via Finnhub",
             "Company profiles",
-            "Symbol search"
+            "Charts powered by TradingView widgets"
         ],
-        "data_provider": "Yahoo Finance",
-        "patterns_supported": [
-            "Head and Shoulders",
-            "Inverse Head and Shoulders",
-            "Double Top/Bottom",
-            "Triple Top/Bottom",
-            "Ascending/Descending/Symmetrical Triangles",
-            "Bull/Bear Flags",
-            "Rising/Falling Wedges",
-            "Bullish/Bearish Engulfing",
-            "Hammer",
-            "Shooting Star",
-            "Doji",
-            "Support/Resistance Levels"
-        ]
+        "data_providers": {
+            "quotes": "Finnhub (60 req/min free)",
+            "charts": "TradingView (unlimited, free)"
+        }
     }

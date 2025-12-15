@@ -4,9 +4,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from sqlalchemy import text
 
-from server.api import auth, stocks
+from server.api import auth, stocks, watchlist, settings
 from server.utils.database import init_database, close_db_connection, SessionLocal
 from server.models.users import User
+from server.models.watchlist import Watchlist
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -67,6 +68,8 @@ app.add_middleware(
 
 app.include_router(auth.router)
 app.include_router(stocks.router)
+app.include_router(watchlist.router)
+app.include_router(settings.router)
 
 
 @app.get("/")

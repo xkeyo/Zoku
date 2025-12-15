@@ -20,7 +20,7 @@ export function HeroSection() {
           <div className="inline-flex items-center space-x-2 bg-primary/10 backdrop-blur-xl px-4 py-2 rounded-full animate-in fade-in slide-in-from-bottom-4 duration-700 border-2 border-primary/30 shadow-lg">
             <TrendingUp className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium text-primary">
-              AI-Powered Stock Pattern Recognition
+              Real-Time Stock Market Data
             </span>
           </div>
 

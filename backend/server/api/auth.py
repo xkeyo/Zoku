@@ -135,6 +135,7 @@ async def google_callback(code: str, db: Session = Depends(get_db)):
         google_id = user_info.get("id")
         first_name = user_info.get("given_name", "")
         last_name = user_info.get("family_name", "")
+        profile_picture = user_info.get("picture")  # Get Google profile picture
         
         if not email or not google_id:
             raise HTTPException(status_code=400, detail="Invalid user info from Google")
@@ -145,6 +146,7 @@ async def google_callback(code: str, db: Session = Depends(get_db)):
             first_name=first_name,
             last_name=last_name,
             google_id=google_id,
+            profile_picture=profile_picture,
         )
         
         crud.user.update_last_login(db, user.user_id)

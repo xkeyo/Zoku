@@ -12,9 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   HomeIcon,
-  UserIcon,
   SettingsIcon,
-  BellIcon,
   LogoutIcon,
   SunIcon,
   MoonIcon,
@@ -22,20 +20,10 @@ import {
   CloseIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  ChartBarIcon,
   ChevronDownIcon,
   ChevronUpIcon,
 } from "@/components/icons";
-import { 
-  TrendingUp, 
-  LineChart, 
-  Target, 
-  Bell as BellLucide, 
-  Scan, 
-  BarChart3,
-  BookOpen,
-  Zap,
-} from "lucide-react";
+import { BarChart3 } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
 
@@ -55,41 +43,12 @@ interface NavSection {
 
 const navSections: NavSection[] = [
   {
-    title: "Overview",
+    title: "Main",
     items: [
-      { title: "Dashboard", href: "/", icon: HomeIcon },
-      { title: "Market Scanner", href: "/scanner", icon: Scan },
+      { title: "Dashboard", href: "/dashboard", icon: HomeIcon },
+      { title: "Live Trading", href: "/dashboard/trading", icon: BarChart3 },
     ],
     collapsible: false,
-  },
-  {
-    title: "Trading",
-    items: [
-      { title: "Stocks", href: "/stocks", icon: TrendingUp },
-      { title: "Watchlists", href: "/watchlists", icon: Target },
-      { title: "Charts", href: "/charts", icon: LineChart },
-    ],
-    collapsible: true,
-    defaultOpen: true,
-  },
-  {
-    title: "Alerts & Analysis",
-    items: [
-      { title: "Alerts", href: "/alerts", icon: BellLucide, badge: "3" },
-      { title: "Analytics", href: "/analytics", icon: BarChart3 },
-      { title: "Backtesting", href: "/backtesting", icon: ChartBarIcon },
-    ],
-    collapsible: true,
-    defaultOpen: true,
-  },
-  {
-    title: "Learn",
-    items: [
-      { title: "Education", href: "/education", icon: BookOpen },
-      { title: "Pattern Library", href: "/pattern-library", icon: Zap },
-    ],
-    collapsible: true,
-    defaultOpen: false,
   },
 ];
 
