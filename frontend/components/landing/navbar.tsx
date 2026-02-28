@@ -19,12 +19,7 @@ export function LandingNavbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navItems = [
-    { name: "Product", href: "#product" },
-    { name: "Features", href: "#features" },
-    { name: "Pricing", href: "#pricing" },
-    { name: "Support", href: "#support" },
-  ];
+  const navItems: { name: string; href: string }[] = [];
 
   return (
     <nav

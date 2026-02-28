@@ -12,7 +12,6 @@ from sqlalchemy import (
     DateTime
 )
 
-from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import JSON
 
 from server.utils.database import Base
@@ -50,7 +49,4 @@ class User(Base):
     reset_token = Column(String, nullable=True, default=None, unique=True)
     reset_token_expiry = Column(DateTime, nullable=True, default=None)
     meta = Column(JSON, nullable=True)
-    
-    # Relationships
-    watchlist = relationship("Watchlist", back_populates="user", cascade="all, delete-orphan")
 

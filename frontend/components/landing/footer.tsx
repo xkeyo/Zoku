@@ -31,7 +31,7 @@ export function LandingFooter() {
               />
             </div>
             <p className="text-sm text-muted-foreground">
-              AI-powered stock pattern recognition and real-time alerts for smarter trading decisions.
+              Welcome to Zoku.
             </p>
           </div>
 

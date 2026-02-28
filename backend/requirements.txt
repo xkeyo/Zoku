@@ -31,4 +31,3 @@ urllib3==2.4.0
 uvicorn==0.34.0
 httpx
 websockets==12.0
-finnhub-python==2.4.20
