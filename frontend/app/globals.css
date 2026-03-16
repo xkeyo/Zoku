@@ -44,38 +44,60 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --radius: 0.5rem;
+  
+  /* Modern DocParser Design System - Notion Inspired */
+  --dp-white: #FFFFFF;
+  --dp-surface: #F7F6F3;
+  --dp-surface-secondary: #EFEEEB;
+  --dp-pdf-bg: #F7F6F3;
+  --dp-border: #E3E2E0;
+  
+  /* Typography Colors - Warm Grays */
+  --dp-text-primary: #37352F;
+  --dp-text-secondary: #787774;
+  --dp-text-hint: #9B9A97;
+  
+  /* Accent Colors - Modern & Vibrant */
+  --dp-primary: #2383E2;
+  --dp-primary-hover: #1A6FCC;
+  --dp-success: #448361;
+  --dp-error: #E03E3E;
+  --dp-warning: #FFC940;
+  
+  /* Status Dots */
+  --dp-status-empty: #ADA89F;
+  --dp-status-filling: #2B4FFF;
+  --dp-status-filled: #6B9B7C;
+  --dp-status-review: #E87461;
+  
+  /* Tailwind compatibility */
+  --background: var(--dp-white);
+  --foreground: var(--dp-text-primary);
+  --card: var(--dp-white);
+  --card-foreground: var(--dp-text-primary);
+  --popover: var(--dp-white);
+  --popover-foreground: var(--dp-text-primary);
+  --primary: var(--dp-primary);
+  --primary-foreground: var(--dp-white);
+  --secondary: var(--dp-surface-secondary);
+  --secondary-foreground: var(--dp-text-primary);
+  --muted: var(--dp-surface);
+  --muted-foreground: var(--dp-text-secondary);
+  --accent: var(--dp-surface-secondary);
+  --accent-foreground: var(--dp-text-primary);
+  --destructive: var(--dp-error);
+  --border: var(--dp-border);
+  --input: var(--dp-border);
+  --ring: var(--dp-primary);
+  --sidebar: var(--dp-white);
+  --sidebar-foreground: var(--dp-text-primary);
+  --sidebar-primary: var(--dp-primary);
+  --sidebar-primary-foreground: var(--dp-white);
+  --sidebar-accent: var(--dp-surface);
+  --sidebar-accent-foreground: var(--dp-text-primary);
+  --sidebar-border: var(--dp-border);
+  --sidebar-ring: var(--dp-primary);
 }
 
 .dark {
@@ -156,6 +178,74 @@
   .delay-1000 {
     animation-delay: 1s;
   }
+  
+  /* DocParser Modern Utilities - Notion Inspired */
+  .dp-border-thin {
+    border-width: 1px;
+  }
+  
+  .dp-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--dp-text-hint);
+  }
+  
+  .dp-body {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--dp-text-primary);
+  }
+  
+  .dp-body-secondary {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--dp-text-secondary);
+  }
+  
+  .dp-section-header {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--dp-text-primary);
+  }
+  
+  .dp-glow {
+    animation: fieldGlow 300ms ease-out;
+  }
+  
+  .dp-pulse-highlight {
+    animation: highlightPulse 1.2s ease-in-out 2;
+  }
+  
+  .dp-shadow-sm {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+  
+  .dp-shadow {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+  
+  .dp-shadow-lg {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  }
+  
+  .dp-button {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 150ms ease;
+    cursor: pointer;
+  }
+  
+  .dp-button:hover {
+    transform: translateY(-1px);
+  }
+  
+  .dp-button:active {
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeIn {
@@ -175,5 +265,28 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes fieldGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(43, 79, 255, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 3px rgba(43, 79, 255, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(43, 79, 255, 0);
+  }
+}
+
+@keyframes highlightPulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.01);
   }
 }

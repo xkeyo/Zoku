@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from sqlalchemy import text
 
-from server.api import auth
+from server.api import auth, extraction
 from server.utils.database import init_database, close_db_connection, SessionLocal
 from server.models.users import User
 
@@ -66,6 +66,7 @@ app.add_middleware(
 )
 
 app.include_router(auth.router)
+app.include_router(extraction.router)
 
 
 @app.get("/")
